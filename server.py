@@ -17,12 +17,21 @@ def loadCompetitions():
 app = Flask(__name__)
 app.secret_key = 'something_special'
 
+
 competitions = loadCompetitions()
 clubs = loadClubs()
+
+
+@app.errorhandler(500)
+def internal_server_error(e):
+    # note that we set the 500 status explicitly
+    return render_template('500.html'), 500
+
 
 @app.route('/')
 def index():
     return render_template('index.html')
+
 
 @app.route('/showSummary',methods=['POST'])
 def showSummary():
