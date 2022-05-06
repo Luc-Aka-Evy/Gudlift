@@ -67,6 +67,11 @@ def purchasePlaces():
         flash("Something went wrong (maybe you don't have enough points or you try to book more than 12 places)")
         return render_template('welcome.html', club=club, competitions=competitions, datetime=date)
 
+
+@app.route('/pointsDisplay')
+def pointsDisplay():
+    return render_template('points_display_board.html', club=clubs)
+
 # TODO: Add route for points display
 
 
