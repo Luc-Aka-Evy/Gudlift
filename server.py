@@ -42,17 +42,19 @@ def showSummary():
 
 @app.route('/book/<competition>/<club>')
 def book(competition,club):
+    date = "2020-04-27 10:00:00"
     foundClub = [c for c in clubs if c['name'] == club][0]
     foundCompetition = [c for c in competitions if c['name'] == competition][0]
     if foundClub and foundCompetition:
         return render_template('booking.html', club=foundClub,competition=foundCompetition)
     else:
         flash("Something went wrong-please try again")
-        return render_template('welcome.html', club=club, competitions=competitions)
+        return render_template('welcome.html', club=club, competitions=competitions, datetime=date)
 
 
 @app.route('/purchasePlaces',methods=['POST'])
 def purchasePlaces():
+    date = "2020-04-27 10:00:00"
     competition = [c for c in competitions if c['name'] == request.form['competition']][0]
     club = [c for c in clubs if c['name'] == request.form['club']][0]
     placesRequired = int(request.form['places'])
@@ -60,10 +62,10 @@ def purchasePlaces():
         competition['numberOfPlaces'] = int(competition['numberOfPlaces'])-placesRequired
         club['points'] = int(club['points'])-placesRequired
         flash('Great-booking complete!')
-        return render_template('welcome.html', club=club, competitions=competitions)
+        return render_template('welcome.html', club=club, competitions=competitions, datetime=date)
     else:
         flash("Something went wrong (maybe you don't have enough points or you try to book more than 12 places)")
-        return render_template('welcome.html', club=club, competitions=competitions)
+        return render_template('welcome.html', club=club, competitions=competitions, datetime=date)
 
 # TODO: Add route for points display
 
