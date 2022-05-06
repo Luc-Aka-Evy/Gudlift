@@ -35,8 +35,9 @@ def index():
 
 @app.route('/showSummary',methods=['POST'])
 def showSummary():
+    date = "2020-04-27 10:00:00"
     club = [club for club in clubs if club['email'] == request.form['email']][0]
-    return render_template('welcome.html',club=club,competitions=competitions)
+    return render_template('welcome.html',club=club,competitions=competitions, datetime=date)
 
 
 @app.route('/book/<competition>/<club>')
@@ -44,7 +45,7 @@ def book(competition,club):
     foundClub = [c for c in clubs if c['name'] == club][0]
     foundCompetition = [c for c in competitions if c['name'] == competition][0]
     if foundClub and foundCompetition:
-        return render_template('booking.html',club=foundClub,competition=foundCompetition)
+        return render_template('booking.html', club=foundClub,competition=foundCompetition)
     else:
         flash("Something went wrong-please try again")
         return render_template('welcome.html', club=club, competitions=competitions)
@@ -61,7 +62,7 @@ def purchasePlaces():
         flash('Great-booking complete!')
         return render_template('welcome.html', club=club, competitions=competitions)
     else:
-        flash("Something went wrong (maybe you don't have enough points or you already have booked 12 places)")
+        flash("Something went wrong (maybe you don't have enough points or you try to book more than 12 places)")
         return render_template('welcome.html', club=club, competitions=competitions)
 
 # TODO: Add route for points display
