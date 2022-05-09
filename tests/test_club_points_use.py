@@ -1,5 +1,5 @@
 import pytest
-from conftest import client
+from .conftest import client
 
 
 def test_should_purchase_places(client):
