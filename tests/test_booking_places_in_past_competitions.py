@@ -1,6 +1,6 @@
 from urllib import response
 import pytest
-from conftest import client
+from .conftest import client
 
 
 def test_should_check_booking_places_in_past_competition(client):
