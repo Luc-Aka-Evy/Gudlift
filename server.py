@@ -3,25 +3,15 @@ from flask import Flask,render_template,request,redirect,flash,url_for
 
 
 def loadClubs():
-    try:
-        with open('clubs.json') as c:
-            listOfClubs = json.load(c)['clubs']
-            return listOfClubs
-    except Exception as e:
-         with open('../clubs.json') as c:
-            listOfClubs = json.load(c)['clubs']
-            return listOfClubs
-
+    with open('clubs.json') as c:
+        listOfClubs = json.load(c)['clubs']
+        return listOfClubs
+    
 
 def loadCompetitions():
-    try:
-        with open('competitions.json') as comps:
-            listOfCompetitions = json.load(comps)['competitions']
-            return listOfCompetitions
-    except Exception as e:
-        with open('../competitions.json') as comps:
-            listOfCompetitions = json.load(comps)['competitions']
-            return listOfCompetitions
+    with open('competitions.json') as comps:
+        listOfCompetitions = json.load(comps)['competitions']
+        return listOfCompetitions
 
 app = Flask(__name__)
 app.secret_key = 'something_special'
@@ -67,13 +57,13 @@ def purchasePlaces():
     competition = [c for c in competitions if c['name'] == request.form['competition']][0]
     club = [c for c in clubs if c['name'] == request.form['club']][0]
     placesRequired = int(request.form['places'])
-    if placesRequired <= int(club['points']):
+    if placesRequired <= int(club['points']) and competition['date'] > date:
         competition['numberOfPlaces'] = int(competition['numberOfPlaces'])-placesRequired
         club['points'] = int(club['points'])-placesRequired
         flash('Great-booking complete!')
         return render_template('welcome.html', club=club, competitions=competitions, datetime=date)
     else:
-        flash("Something went wrong (maybe you don't have enough points or you try to book more than 12 places)")
+        flash("Something went wrong (maybe you don't have enough points or you try to book more than 12 places or this competitions is already full or over)")
         return render_template('welcome.html', club=club, competitions=competitions, datetime=date)
 
 
