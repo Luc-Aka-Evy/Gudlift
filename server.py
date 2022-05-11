@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 from flask import Flask,render_template,request,redirect,flash,url_for
 
 
@@ -34,37 +35,34 @@ def index():
 
 @app.route('/showSummary',methods=['POST'])
 def showSummary():
-    date = "2020-04-27 10:00:00"
     club = [club for club in clubs if club['email'] == request.form['email']][0]
-    return render_template('welcome.html',club=club,competitions=competitions, datetime=date)
+    return render_template('welcome.html',club=club,competitions=competitions, datetime=str(datetime.now()))
 
 
 @app.route('/book/<competition>/<club>')
 def book(competition,club):
-    date = "2020-04-27 10:00:00"
     foundClub = [c for c in clubs if c['name'] == club][0]
     foundCompetition = [c for c in competitions if c['name'] == competition][0]
     if foundClub and foundCompetition:
         return render_template('booking.html', club=foundClub,competition=foundCompetition)
     else:
         flash("Something went wrong-please try again")
-        return render_template('welcome.html', club=club, competitions=competitions, datetime=date)
+        return render_template('welcome.html', club=club, competitions=competitions, datetime=str(datetime.now()))
 
 
 @app.route('/purchasePlaces',methods=['POST'])
 def purchasePlaces():
-    date = "2020-04-27 10:00:00"
     competition = [c for c in competitions if c['name'] == request.form['competition']][0]
     club = [c for c in clubs if c['name'] == request.form['club']][0]
     placesRequired = int(request.form['places'])
-    if placesRequired <= int(club['points']) and competition['date'] > date:
+    if placesRequired <= int(club['points']) and competition['date'] > str(datetime.now()):
         competition['numberOfPlaces'] = int(competition['numberOfPlaces'])-placesRequired
         club['points'] = int(club['points'])-placesRequired
         flash('Great-booking complete!')
-        return render_template('welcome.html', club=club, competitions=competitions, datetime=date)
+        return render_template('welcome.html', club=club, competitions=competitions, datetime=str(datetime.now))
     else:
         flash("Something went wrong (maybe you don't have enough points or you try to book more than 12 places or this competitions is already full or over)")
-        return render_template('welcome.html', club=club, competitions=competitions, datetime=date)
+        return render_template('welcome.html', club=club, competitions=competitions, datetime=str(datetime.now))
 
 
 @app.route('/pointsDisplay')
