@@ -55,14 +55,15 @@ def purchasePlaces():
     competition = [c for c in competitions if c['name'] == request.form['competition']][0]
     club = [c for c in clubs if c['name'] == request.form['club']][0]
     placesRequired = int(request.form['places'])
-    if placesRequired <= int(club['points']) and competition['date'] > str(datetime.now()):
-        competition['numberOfPlaces'] = int(competition['numberOfPlaces'])-placesRequired
-        club['points'] = int(club['points'])-placesRequired
-        flash('Great-booking complete!')
-        return render_template('welcome.html', club=club, competitions=competitions, datetime=str(datetime.now))
-    else:
-        flash("Something went wrong (maybe you don't have enough points or you try to book more than 12 places or this competitions is already full or over)")
-        return render_template('welcome.html', club=club, competitions=competitions, datetime=str(datetime.now))
+    if placesRequired > 0 and competition['date'] > str(datetime.now()):
+        if int(club['points']) > (placesRequired * 3):
+            competition['numberOfPlaces'] = int(competition['numberOfPlaces'])-placesRequired
+            club['points'] = int(club['points'])-(placesRequired * 3) 
+            flash('Great-booking complete!')
+            return render_template('welcome.html', club=club, competitions=competitions, datetime=str(datetime.now()))
+        else:
+            flash("Something went wrong (maybe you don't have enough points or you try to book more than 12 places or this competitions is already full or over)")
+            return render_template('welcome.html', club=club, competitions=competitions, datetime=str(datetime.now()))
 
 
 @app.route('/pointsDisplay')
