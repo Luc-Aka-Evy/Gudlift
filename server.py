@@ -59,7 +59,7 @@ def purchasePlaces():
         if int(club['points']) > (placesRequired * 3):
             competition['numberOfPlaces'] = int(competition['numberOfPlaces'])-placesRequired
             club['points'] = int(club['points'])-(placesRequired * 3) 
-            flash('Great-booking complete!')
+            flash('Great-booking complete! you booked {} places for {}'.format(placesRequired, competition['name']))
             return render_template('welcome.html', club=club, competitions=competitions, datetime=str(datetime.now()))
         else:
             flash("Something went wrong (maybe you don't have enough points or you try to book more than 12 places or this competitions is already full or over)")
