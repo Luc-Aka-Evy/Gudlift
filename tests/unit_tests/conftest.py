@@ -1,6 +1,6 @@
 import pytest
 
-from server import app
+from gudlft import app
 
 
 @pytest.fixture
