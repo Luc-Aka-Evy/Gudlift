@@ -3,25 +3,16 @@ from flask import Flask,render_template,request,redirect,flash,url_for
 
 
 def loadClubs():
-    try:
-        with open('clubs.json') as c:
-            listOfClubs = json.load(c)['clubs']
-            return listOfClubs
-    except Exception as e:
-         with open('../clubs.json') as c:
-            listOfClubs = json.load(c)['clubs']
-            return listOfClubs
+    with open('clubs.json') as c:
+        listOfClubs = json.load(c)['clubs']
+        return listOfClubs
 
 
 def loadCompetitions():
-    try:
-        with open('competitions.json') as comps:
-            listOfCompetitions = json.load(comps)['competitions']
-            return listOfCompetitions
-    except Exception as e:
-        with open('../competitions.json') as comps:
-            listOfCompetitions = json.load(comps)['competitions']
-            return listOfCompetitions
+    with open('competitions.json') as comps:
+        listOfCompetitions = json.load(comps)['competitions']
+        return listOfCompetitions
+
 
 
 app = Flask(__name__)
